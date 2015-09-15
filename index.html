@@ -25,10 +25,22 @@
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">Menu</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="#home">Mon Moodboard</a>
-        <a class="mdl-navigation__link" href="#resume">Amis</a>
-        <a class="mdl-navigation__link" href="#contact">Au hasard</a>
-        <a class="mdl-navigation__link" href="">Apparence</a>
+        <a class="mdl-navigation__link" href="#home">
+          <div style="float:left;width:30px;"><i class="tiny material-icons">dashboard</i></div>
+          <div style="float:right;width:60%;padding-top:5px;">Mon Dashboard</div>
+        </a>
+        <a class="mdl-navigation__link" href="#resume">
+          <div style="float:left;width:30px;"><i class="tiny material-icons">supervisor_account</i></div>
+          <div style="float:right;width:60%;padding-top:5px;">Amis</div>
+        </a>
+        <a class="mdl-navigation__link" href="#contact">
+          <div style="float:left;width:30px;"><i class="tiny material-icons">loop</i></div>
+          <div style="float:right;width:60%;padding-top:5px;">Au hasard</div>
+        </a>
+        <a class="mdl-navigation__link" href="">
+          <div style="float:left;width:30px;"><i class="tiny material-icons">web</i></div>
+          <div style="float:right;width:60%;padding-top:5px;">Apparence</div>
+        </a>
       </nav>
     </div>
     <main class="mdl-layout__content">
@@ -159,7 +171,7 @@
                     rect.setAttribute("stroke", "black");
                     rect.setAttribute("rx", "10");
                     rect.setAttribute("ry", "10");
-                    rect.setAttribute("stroke-width", "20");
+                    rect.setAttribute("stroke-width", "10");
                     rect.setAttribute("fill", "none");
 
                     g.appendChild(rect);

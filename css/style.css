@@ -17,15 +17,11 @@ a.mdl-badge {
 /* Header / Navigation bar */
 
 .mdl-layout__header {
-  background-color: #FFA000;
-}
-
-.mdl-layout__tab-bar {
-  background-color: #FFC107;
+  background-color: gray;
 }
 
 .mdl-badge[data-badge]:after {
-  background: #727272;
+  background: red;
 }
 
 /* Content / Container / Main */
