@@ -27,7 +27,7 @@
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="#home">
           <div style="float:left;width:30px;"><i class="tiny material-icons">dashboard</i></div>
-          <div style="float:right;width:60%;padding-top:5px;">Mon Dashboard</div>
+          <div style="float:right;width:60%;padding-top:5px;">Mon Moodboard</div>
         </a>
         <a class="mdl-navigation__link" href="#resume">
           <div style="float:left;width:30px;"><i class="tiny material-icons">supervisor_account</i></div>
@@ -45,7 +45,7 @@
     </div>
     <main class="mdl-layout__content">
       <section class="mdl-layout__tab-panel is-active" id="home">
-        <div class="page-content">
+        <div class="page-content" id="page-content">
           <svg xmlns="http://www.w3.org/2000/svg" 
            xmlns:xlink="http://www.w3.org/1999/xlink"
            xmlns:svg="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@
                         // do some hackyness here to get the correct variables
                         // to the function
                         img.onload = function(k, url) { return function() {
-                                var g = addImage(url, 1.0);
+                                var g = addImage(url, 1.0, this);
                                 g.style.opacity = 1.0;
                                 g.vTranslate = [100 + Math.random() * 300 + (k%3) * 250,
                                                 100 + Math.random() * 300 + (k/3) * 280];
@@ -146,9 +146,10 @@
                 // this includes the toplevel group, the image itself,
                 // and the clickable hotspots used for rotating the image.
                 var nextImageId = 0;
-                function addImage(url, initOpacity) {
-                    var imgw = 1000;
-                    var imgh = 700;
+                function addImage(url, initOpacity, img) {
+                    var container = document.getElementById("canvas");
+                    var imgw = img.width;
+                    var imgh = img.height;
 
                     var id = nextImageId++;
                     var s = "image" + id;
