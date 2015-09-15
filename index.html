@@ -25,26 +25,26 @@
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">Menu</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="#home">
+        <a class="mdl-navigation__link" href="#myboard">
           <div style="float:left;width:30px;"><i class="tiny material-icons">dashboard</i></div>
           <div style="float:right;width:60%;padding-top:5px;">Mon Moodboard</div>
         </a>
-        <a class="mdl-navigation__link" href="#resume">
+        <a class="mdl-navigation__link" href="#friends">
           <div style="float:left;width:30px;"><i class="tiny material-icons">supervisor_account</i></div>
           <div style="float:right;width:60%;padding-top:5px;">Amis</div>
         </a>
-        <a class="mdl-navigation__link" href="#contact">
+        <a class="mdl-navigation__link" href="#random">
           <div style="float:left;width:30px;"><i class="tiny material-icons">loop</i></div>
           <div style="float:right;width:60%;padding-top:5px;">Au hasard</div>
         </a>
-        <a class="mdl-navigation__link" href="">
+        <a class="mdl-navigation__link" href="#customize">
           <div style="float:left;width:30px;"><i class="tiny material-icons">web</i></div>
           <div style="float:right;width:60%;padding-top:5px;">Apparence</div>
         </a>
       </nav>
     </div>
     <main class="mdl-layout__content">
-      <section class="mdl-layout__tab-panel is-active" id="home">
+      <section class="mdl-layout__tab-panel is-active" id="myboard">
         <div class="page-content" id="page-content">
           <svg xmlns="http://www.w3.org/2000/svg" 
            xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -148,8 +148,8 @@
                 var nextImageId = 0;
                 function addImage(url, initOpacity, img) {
                     var container = document.getElementById("canvas");
-                    var imgw = img.width;
-                    var imgh = img.height;
+                    var imgw = img.width > 550 && img.height > 500 ? img.width : img.width*2;
+                    var imgh = img.width > 550 && img.height > 500 ? img.height : img.height*2;
 
                     var id = nextImageId++;
                     var s = "image" + id;
@@ -274,14 +274,14 @@
           </svg>
         </div>
       </section>
-      <section class="mdl-layout__tab-panel" id="resume">
+      <section class="mdl-layout__tab-panel" id="friends">
         <div class="page-content">
           <div class="mdl-grid mdl-grid--no-spacing">
             Rien pour le moment.
           </div>
         </div>
       </section>
-      <section class="mdl-layout__tab-panel" id="contact">
+      <section class="mdl-layout__tab-panel" id="random">
         <div class="page-content">
           <div class="mdl-grid">
             Rien pour le moment.
