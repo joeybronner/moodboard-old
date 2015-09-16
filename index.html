@@ -68,6 +68,8 @@
                 var r2d = 360.0 / (2.0 * Math.PI);
                 var gCanvas = null;
                 var currentTransform = null;
+                var gCanvasWidth = null;
+                var gCanvasHeight = null;
 
                 function doload() {
 
@@ -83,6 +85,11 @@
                                "https://pbs.twimg.com/media/BvzPgsqCAAEkYhr.jpg",
                                "https://pbs.twimg.com/media/B6iK8LSIYAAk_oF.jpg" ];
 
+                    // Get main canvas & retrieve width/height
+                    gCanvas = document.getElementById("canvas");
+                    gCanvasWidth = gCanvas.offsetWidth;
+                    gCanvasHeight = gCanvas.offsetHeight;
+
                     // Load the images in the background, and only add them once they're
                     // loaded (and, presumably, cached by the broser)
                     for (var k = 0; k < images.length; k++) {
@@ -93,8 +100,9 @@
                         img.onload = function(k, url) { return function() {
                                 var g = addImage(url, 1.0, this);
                                 g.style.opacity = 1.0;
-                                g.vTranslate = [100 + Math.random() * 300 + (k%3) * 250,
-                                                100 + Math.random() * 300 + (k/3) * 280];
+                                g.vTranslate = [Math.floor((Math.random() * gCanvasWidth*0.4) + gCanvasWidth*0.3),
+                                                Math.floor((Math.random() * gCanvasHeight*0.5) + gCanvasHeight*0.3)];
+
                                 var c = 0.25 + (Math.random() * .25);
                                 g.vScale = c; // 0.25; // 0.001;
                                 g.vRotate = (Math.random() * 40) - 20;
@@ -109,7 +117,6 @@
                         img.src = images[k];
                     }
 
-                    gCanvas = document.getElementById("canvas");
                     gCanvas.addEventListener("mousemove", onMouseMove, false);
                     gCanvas.addEventListener("mouseup", onMouseUp, false);
                     document.getElementById("background-rect").addEventListener("mousemove", onMouseMove, false);
