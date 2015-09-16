@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/mystyle.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script src="bower_components/material-design-lite/material.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
 </head>
 <body>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
@@ -69,6 +70,9 @@
                 var currentTransform = null;
 
                 function doload() {
+
+                  getJSONUserFile("joeybronner");
+
                     var images = [ "https://pbs.twimg.com/media/CNSG57zW8AABQH_.jpg",
                                "https://pbs.twimg.com/media/CLhAKpNWwAA22RA.jpg",
                                "https://pbs.twimg.com/media/B8rAcjqCcAEf3CB.jpg",
@@ -110,6 +114,12 @@
                     gCanvas.addEventListener("mouseup", onMouseUp, false);
                     document.getElementById("background-rect").addEventListener("mousemove", onMouseMove, false);
                     document.getElementById("background-rect").addEventListener("mouseup", onMouseUp, false);
+                }
+
+                function getJSONUserFile(user) {
+                  $.getJSON('data/dataset_' + user + '.json', function(data) {
+                    console.log(data);
+                  });
                 }
 
                 // convenience function to set X, Y, width, and height attributes
