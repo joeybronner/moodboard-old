@@ -1,0 +1,20 @@
+{
+  "name": "moodboard",
+  "version": "0.0.0",
+  "homepage": "https://github.com/joeybronner/moodboard",
+  "authors": [
+    "Joey Bronner <joeybronner@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "material-design-lite": "~1.0.4"
+  }
+}
