@@ -1,0 +1,19 @@
+body {
+	background-image: url('../img/404-bg.gif');
+	background-size: cover;
+}
+
+.main_404 {
+	font-family: 'Roboto Mono';
+	font-size:30px;
+	width: 300px;
+    height: 250px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color:white;
+    text-align: center;
+}
