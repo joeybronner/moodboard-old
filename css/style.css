@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'DK'; /*a name to be used later*/
+    src: url('../fonts/DK.ttf'); /*URL to font*/
+}
+
 body {
   background-color: #FFF; 
 	background-size: cover;
@@ -21,6 +26,11 @@ a.mdl-badge {
 
 .mdl-badge[data-badge]:after {
   background: red;
+}
+
+.mdl-layout-title {
+  font-family: 'DK';
+  font-size: 28px;
 }
 
 /* Content / Container / Main */
