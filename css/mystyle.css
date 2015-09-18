@@ -2,3 +2,9 @@
 
 html, body { margin:0; padding:0; overflow:hidden }
 svg { position:fixed; top:0; left:0; height:100%; width:100% }
+.toast-info {
+	background-color: gray;
+}
+#toast-container > .toast-info {
+  background-image: url("../img/paint.png") !important;
+}
