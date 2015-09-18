@@ -11,6 +11,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script src="bower_components/material-design-lite/material.min.js"></script>
   <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script>
+  function searchUser(e) {
+    if (e.keyCode == 13) {
+        alert("search " + document.getElementById("fixed-header-drawer-exp").value);
+        return false;
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
@@ -23,7 +31,7 @@
             <i class="material-icons">search</i>
           </label>
           <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" />
+            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" onkeypress="return searchUser(event)"/>
           </div>
         </div>
         <nav class="mdl-navigation mdl-layout--large-screen-only" style="margin-left:30px">
@@ -70,20 +78,17 @@
                 var currentTransform = null;
                 var gCanvasWidth = null;
                 var gCanvasHeight = null;
+                var images = [];
+                var links = [];
+                var user = "joeybronner";
 
                 function doload() {
 
-                  getJSONUserFile("joeybronner");
+                    // Check if Chrome or Safari browser
+                    if (!isBrowserSupported())
+                      return;
 
-                    var images = [ "https://pbs.twimg.com/media/CNSG57zW8AABQH_.jpg",
-                               "https://pbs.twimg.com/media/CLhAKpNWwAA22RA.jpg",
-                               "https://pbs.twimg.com/media/B8rAcjqCcAEf3CB.jpg",
-                               "https://pbs.twimg.com/media/B8lWafPCYAIvQgD.jpg",
-                               "https://pbs.twimg.com/media/B0OesVfCIAMOC4H.jpg",
-                               "https://pbs.twimg.com/media/BzRvS_vIIAAuYH5.jpg",
-                               "https://pbs.twimg.com/media/By5BjR5CQAERE3z.jpg",
-                               "https://pbs.twimg.com/media/BvzPgsqCAAEkYhr.jpg",
-                               "https://pbs.twimg.com/media/B6iK8LSIYAAk_oF.jpg" ];
+                    getJSONUserFile(user);
 
                     // Get main canvas & retrieve width/height
                     gCanvas = document.getElementById("canvas");
@@ -123,10 +128,38 @@
                     document.getElementById("background-rect").addEventListener("mouseup", onMouseUp, false);
                 }
 
+                function isBrowserSupported() {
+                  var isChromium = window.chrome;
+                  var vendorName = window.navigator.vendor;
+                  var isOpera = window.navigator.userAgent.indexOf("OPR") > -1;
+                  var isSafari = false;
+                  var ua = navigator.userAgent.toLowerCase(); 
+                    if (ua.indexOf('safari') != -1) { 
+                      if (ua.indexOf('chrome') > -1) {
+                        // Nothing.
+                      } else {
+                        isSafari = true;
+                      }
+                    }
+                  if(isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false || isSafari == true) {
+                     return true;
+                  } else { 
+                      window.location.href = 'error/notsupported.html';
+                  }
+                }
+
                 function getJSONUserFile(user) {
-                  $.getJSON('data/dataset_' + user + '.json', function(data) {
-                    console.log(data);
-                  });
+                    $.ajax({
+                        url: 'data/dataset_' + user + '.json',
+                        dataType: 'json',
+                        async: false,
+                        success: function(data) {
+                          for (var i=0 ; i<data.images.length; i++) {
+                              images.push(data.images[i].url);
+                              links.push(data.images[i].link);
+                          }  
+                        }
+                    });
                 }
 
                 // convenience function to set X, Y, width, and height attributes
@@ -172,7 +205,6 @@
                 // and the clickable hotspots used for rotating the image.
                 var nextImageId = 0;
                 function addImage(url, initOpacity, img) {
-                    var container = document.getElementById("canvas");
                     var imgw = img.width > 550 && img.height > 500 ? img.width : img.width*2;
                     var imgh = img.width > 550 && img.height > 500 ? img.height : img.height*2;
 
@@ -217,11 +249,38 @@
                     g.appendChild(g2);
                     g.addEventListener("mouseover", function (evt) { var o=g2; o.style.visibility = "visible";}, false);
                     g.addEventListener("mouseout", function (evt) { var o=g2; o.style.visibility = "hidden";}, false);
-                    g.addEventListener("mousedown", function (evt) { var gr=g; return startTransform(evt, gr, 0); }, false);
+
+                    var clicks = 0, delay = 500;
+                    $(g).on('mousedown', function(event) {
+                        event.preventDefault();
+                        clicks++;
+
+                        setTimeout(function() {
+                            clicks = 0;
+                        }, delay);
+
+                        if (clicks === 2) {
+                            redirectToLink(g.id);
+                            clicks = 0;
+                            return;
+                        } else {
+                            deplace(event, g);
+                        }
+                    });                    
 
                     gCanvas.appendChild(g);
 
                     return g;
+                }
+
+                function redirectToLink(elementId) {
+                    var id = parseInt(elementId.replace("image", ""));
+                    var win = window.open(links[id], '_blank');
+                    win.focus();
+                }
+
+                function deplace(evt, g) {
+                  return startTransform(evt, g, 0);
                 }
 
                 function onMouseUp(ev) {
