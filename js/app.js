@@ -11,8 +11,13 @@ var links = [];
 var user = "joeybronner";
 var first = true;
 var videos = ["https://www.youtube.com/embed/zoPvgZ1Vbmc"];
+var backgroundcolor;
 
 function doload(u) {
+
+    // Check if Chrome or Safari browser
+    if (!isBrowserSupported())
+        return;
 
     document.getElementById('myboard').className += ' is-active';
 
@@ -28,13 +33,8 @@ function doload(u) {
           "timeOut": 5000,
           "extendedTimeOut": 1000
         };
-
         toastr.info('HEY, WELCOME TO MOODBOARD.');
     }
-
-    // Check if Chrome or Safari browser
-    if (!isBrowserSupported())
-        return;
 
     if (u=='' || u==undefined) 
         u=user;
@@ -129,6 +129,9 @@ function getJSONUserFile(user) {
                 images.push(data.images[i].url);
                 links.push(data.images[i].link);
             }
+            // Update Background color
+            var object =  document.getElementById('background-rect');
+            object.setAttribute("fill", data.apparences[0].backgroundcolor);
         }
     });
 }
