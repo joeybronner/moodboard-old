@@ -16,3 +16,5 @@ function changeSection(section) {
 
 	document.getElementById('left-panel').className = document.getElementById('left-panel').className.replace(' is-visible', '');
 }
+
+

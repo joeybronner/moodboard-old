@@ -21,7 +21,9 @@ function doload(u) {
 
     document.getElementById('myboard').className += ' is-active';
 
-    if (first) {
+    document.getElementById('page-title-username').innerHTML = u.toUpperCase();
+
+    /*if (first) {
         first = false;
         // Toast example
         toastr.options = {
@@ -34,7 +36,7 @@ function doload(u) {
           "extendedTimeOut": 1000
         };
         toastr.info('HEY, WELCOME TO MOODBOARD.');
-    }
+    }*/
 
     if (u=='' || u==undefined) 
         u=user;

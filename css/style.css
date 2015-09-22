@@ -2,7 +2,10 @@
     font-family: 'DK'; /*a name to be used later*/
     src: url('../fonts/DK.ttf'); /*URL to font*/
 }
-
+@font-face {
+    font-family: 'Roboto-Thin'; /*a name to be used later*/
+    src: url('../fonts/Roboto-Thin.ttf'); /*URL to font*/
+}
 body {
   background-color: #FFF; 
 	background-size: cover;
@@ -31,6 +34,17 @@ a.mdl-badge {
 .mdl-layout-title {
   font-family: 'DK';
   font-size: 28px;
+}
+
+.mdl-layout-title-mini {
+    display: block;
+    position: relative;
+    font-family: 'Roboto-Thin';
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: .02em;
+    font-weight: 100;
+    box-sizing: border-box;
 }
 
 /* Content / Container / Main */
