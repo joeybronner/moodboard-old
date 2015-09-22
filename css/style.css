@@ -79,6 +79,11 @@ a.mdl-badge {
   box-sizing: border-box;
 }
 
+/* Inputs */
+.mdl-textfield__input {
+  border-bottom: 0px;
+}
+
 /* Cards */
   .card-wide.mdl-card {
     width: 512px;

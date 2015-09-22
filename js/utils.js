@@ -7,14 +7,46 @@ function searchUser(e) {
 }
 
 function changeSection(section) {
-	document.getElementById('myboard').className = document.getElementById('myboard').className.replace(' is-active', '');
-	document.getElementById('friends').className = document.getElementById('friends').className.replace(' is-active', '');
-	document.getElementById('random').className = document.getElementById('random').className.replace(' is-active', '');
-	document.getElementById('customize').className = document.getElementById('customize').className.replace(' is-active', '');	
-
+	var sections = ['myboard', 'friends', 'random', 'customize'];
+	for (var s in sections) {
+	  document.getElementById(sections[s]).className = document.getElementById(sections[s]).className.replace(' is-active', '');
+	}
+	// Show requested view
 	document.getElementById(section).className += ' is-active';
 
+	switch(section) {
+	    case 'myboard':
+	        // TODO: Call good function
+	        break;
+	    case 'friends':
+	        // TODO: Call good function
+	        break;
+	    case 'random':
+	    	// TODO: Call good function
+	    	break;
+	    case 'customize':
+	    	loadApparencePanel();
+	    	break;
+	}
+
+	// Hide left panel
 	document.getElementById('left-panel').className = document.getElementById('left-panel').className.replace(' is-visible', '');
 }
 
+function loadApparencePanel() {
+	var userData = getJSONFile(user);
+	document.getElementById('backgroundcolor').value = userData.apparences[0].backgroundcolor;
+}
 
+function getJSONFile(user) {
+	var d;
+    $.ajax({
+        url: 'data/dataset_' + user + '.json',
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            d = data;
+        }
+    });
+    return d;
+}
