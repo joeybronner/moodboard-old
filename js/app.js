@@ -19,8 +19,6 @@ function doload(u) {
     if (!isBrowserSupported())
         return;
 
-    document.getElementById('myboard').className += ' is-active';
-
     document.getElementById('page-title-username').innerHTML = u.toUpperCase();
 
     /*if (first) {
@@ -46,6 +44,7 @@ function doload(u) {
 
     // Get main canvas & retrieve width/height
     gCanvas = document.getElementById("canvas");
+
     gCanvasWidth = gCanvas.offsetWidth;
     gCanvasHeight = gCanvas.offsetHeight;
 
