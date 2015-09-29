@@ -36,6 +36,8 @@ function changeSection(section) {
 function loadApparencePanel() {
 	var userData = getJSONFile(user);
 	document.getElementById('backgroundcolor').value = userData.apparences[0].backgroundcolor;
+
+	console.log(db);
 }
 
 function getJSONFile(user) {

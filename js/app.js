@@ -12,12 +12,16 @@ var user = "joeybronner";
 var first = true;
 var videos = ["https://www.youtube.com/embed/zoPvgZ1Vbmc"];
 var backgroundcolor;
+var db;
 
 function doload(u) {
 
     // Check if Chrome or Safari browser
     if (!isBrowserSupported())
         return;
+
+    // Load database
+    db = new PouchDB('moodboard_db');
 
     document.getElementById('page-title-username').innerHTML = u.toUpperCase();
 
