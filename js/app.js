@@ -20,9 +20,6 @@ function doload(u) {
     if (!isBrowserSupported())
         return;
 
-    // Load database
-    db = new PouchDB('moodboard_db');
-
     document.getElementById('page-title-username').innerHTML = u.toUpperCase();
 
     /*if (first) {
