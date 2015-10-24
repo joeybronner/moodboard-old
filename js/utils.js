@@ -34,12 +34,17 @@ function changeSection(section) {
 }
 
 function loadApparencePanel() {
-	var userData = getJSONFile(user);
-	document.getElementById('backgroundcolor').value = userData.apparences[0].backgroundcolor;
+	// Load user data
+	var userData = getJSONFile(authentifiedUser);
+
+	if (userData != null) {
+		// Display his values
+		document.getElementById('backgroundcolor').value = userData.apparences[0].backgroundcolor;
+	}
 }
 
 function getJSONFile(user) {
-	var d;
+	var d = null;
     $.ajax({
         url: 'data/dataset_' + user + '.json',
         dataType: 'json',
