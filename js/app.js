@@ -8,9 +8,9 @@ var gCanvasWidth = null;
 var gCanvasHeight = null;
 var images = [];
 var links = [];
+var authentifiedUser = "joeybronner";
 var user = "joeybronner";
-var first = true;
-var videos = ["https://www.youtube.com/embed/zoPvgZ1Vbmc"];
+var invalid_img = 'img/invalid_img.png';
 var backgroundcolor;
 var db;
 
@@ -22,26 +22,15 @@ function doload(u) {
 
     document.getElementById('page-title-username').innerHTML = u.toUpperCase();
 
-    /*if (first) {
-        first = false;
-        // Toast example
-        toastr.options = {
-          "debug": false,
-          "positionClass": "toast-bottom-right",
-          "onclick": null,
-          "fadeIn": 300,
-          "fadeOut": 1000,
-          "timeOut": 5000,
-          "extendedTimeOut": 1000
-        };
-        toastr.info('HEY, WELCOME TO MOODBOARD.');
-    }*/
-
-    if (u=='' || u==undefined) 
+    if (u=='' || u==undefined)
         u=user;
+    else
+        user=u;
 
-    images = [];
-    getJSONUserFile(u);
+    var userData = getJSONFile(user);
+    images = getImagesFromUserJsonData(userData);
+    links = getLinksFromUserJsonData(userData);
+    applySandboxBackgroundColor(userData);
 
     // Get main canvas & retrieve width/height
     gCanvas = document.getElementById("canvas");
@@ -53,6 +42,9 @@ function doload(u) {
     // loaded (and, presumably, cached by the broser)
     for (var k = 0; k < images.length; k++) {
         var img = new Image();
+
+        // If image is not accessible or link broken, use a default image :/
+        images[k] = isImageAccessible(images[k]) ? images[k] : invalid_img;
 
         // do some hackyness here to get the correct variables
         // to the function
@@ -77,29 +69,15 @@ function doload(u) {
 
         img.src = images[k];
     }
-/*
-    for (var k = 0; k < videos.length; k++) {
-                var g = addVideo(videos[k], 1.0, this);
-                g.style.opacity = 1.0;
-                g.vTranslate = [Math.floor((Math.random() * gCanvasWidth * 0.4) + gCanvasWidth * 0.3),
-                    Math.floor((Math.random() * gCanvasHeight * 0.5) + gCanvasHeight * 0.3)
-                ];
-
-                var c = 0.25 + (Math.random() * .25);
-                g.vScale = c; // 0.25; // 0.001;
-                g.vRotate = (Math.random() * 40) - 20;
-
-                g.setAttribute("transform", "translate(" + g.vTranslate[0] + "," + g.vTranslate[1] + ") " +
-                    "scale(" + g.vScale + "," + g.vScale + ") " +
-                    "rotate(" + g.vRotate + ") ");
-                rampOpacityUp(g);
-    }*/
-
     gCanvas.addEventListener("mousemove", onMouseMove, false);
     gCanvas.addEventListener("mouseup", onMouseUp, false);
     document.getElementById("background-rect").addEventListener("mousemove", onMouseMove, false);
     document.getElementById("background-rect").addEventListener("mouseup", onMouseUp, false);
 }
+
+function isImageAccessible(url) {
+    return false;
+} 
 
 function isBrowserSupported() {
     var isChromium = window.chrome;
@@ -121,21 +99,25 @@ function isBrowserSupported() {
     }
 }
 
-function getJSONUserFile(user) {
-    $.ajax({
-        url: 'data/dataset_' + user + '.json',
-        dataType: 'json',
-        async: false,
-        success: function(data) {
-            for (var i = 0; i < data.images.length; i++) {
-                images.push(data.images[i].url);
-                links.push(data.images[i].link);
-            }
-            // Update Background color
-            var object =  document.getElementById('background-rect');
-            object.setAttribute("fill", data.apparences[0].backgroundcolor);
-        }
-    });
+function applySandboxBackgroundColor(userData) {
+    var object =  document.getElementById('background-rect');
+    object.setAttribute("fill", userData.apparences[0].backgroundcolor);
+}
+
+function getImagesFromUserJsonData(userData) {
+    var images = [];
+    for (var i = 0; i < userData.images.length; i++) {
+        images.push(userData.images[i].url);
+    } 
+    return images;   
+}
+
+function getLinksFromUserJsonData(userData) {
+    var links = [];
+    for (var i = 0; i < userData.images.length; i++) {
+        links.push(userData.images[i].link);
+    } 
+    return links;   
 }
 
 // convenience function to set X, Y, width, and height attributes
@@ -189,7 +171,6 @@ function newClickableRect(group, id, x, y, w, h, fill, stroke) {
 // this includes the toplevel group, the image itself,
 // and the clickable hotspots used for rotating the image.
 var nextImageId = 0;
-var nextVideoId = 0;
 
 function addImage(url, initOpacity, img) {
     var imgw = img.width > 550 && img.height > 500 ? img.width : img.width * 2;
@@ -261,69 +242,6 @@ function addImage(url, initOpacity, img) {
             deplace(event, g);
         }
     });
-
-    gCanvas.appendChild(g);
-
-    return g;
-}
-
-function addVideo(url, initOpacity, img) {
-    var imgw = 560
-    var imgh = 315;
-
-    var id = nextVideoId++;
-    var s = "video" + id;
-    var g = document.createElementNS(SVG, "g");
-    g.setAttribute("id", s);
-
-    if (initOpacity != null)
-        g.style.opacity = initOpacity;
-
-    var foreign = document.createElementNS(SVG, "foreignObject");
-    svgSetXYWH(foreign, -imgw / 2, -imgh / 2, imgw, imgh);
-    g.appendChild(foreign);
-
-    var iframe = document.createElementNS(SVG, "iframe");
-    iframe.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-    iframe.setAttribute("preserveAspectRatio", "xMinYMin slice");
-    iframe.setAttribute("id", s + "-img");
-    svgSetXYWH(iframe, -imgw / 2, -imgh / 2, imgw, imgh);
-    iframe.setAttribute("src", "https://www.youtube.com/embed/BkbHeFHn8JY");
-    iframe.setAttribute("frameworder", "0");
-    foreign.appendChild(iframe);
-
-    var rect = document.createElementNS(SVG, "rect");
-    rect.setAttribute("id", s + "-border");
-    svgSetXYWH(rect, -imgw / 2, -imgh / 2, imgw, imgh);
-    rect.setAttribute("stroke", "black");
-    rect.setAttribute("rx", "10");
-    rect.setAttribute("ry", "10");
-    rect.setAttribute("stroke-width", "10");
-    rect.setAttribute("fill", "none");
-
-    g.appendChild(rect);
-
-    var g2 = document.createElementNS(SVG, "g");
-    g2.setAttribute("id", s + "-overlay");
-    g2.setAttribute("class", "image-overlay");
-    g2.setAttribute("style", "visibility: hidden");
-
-    var rsz = 200;
-
-    g2.appendChild(newClickableRect(g, s + "-tl", -imgw / 2, -imgh / 2, rsz, rsz, hotspot, "rgba(100,100,100,0.5)"));
-    g2.appendChild(newClickableRect(g, s + "-tr", imgw / 2 - rsz, -imgh / 2, rsz, rsz, hotspot, "rgba(100,100,100,0.5)"));
-    g2.appendChild(newClickableRect(g, s + "-br", imgw / 2 - rsz, imgh / 2 - rsz, rsz, rsz, hotspot, "rgba(100,100,100,0.5)"));
-    g2.appendChild(newClickableRect(g, s + "-bl", -imgw / 2, imgh / 2 - rsz, rsz, rsz, hotspot, "rgba(100,100,100,0.5)"));
-
-    g.appendChild(g2);
-    g.addEventListener("mouseover", function(evt) {
-        var o = g2;
-        o.style.visibility = "visible";
-    }, false);
-    g.addEventListener("mouseout", function(evt) {
-        var o = g2;
-        o.style.visibility = "hidden";
-    }, false);
 
     gCanvas.appendChild(g);
 
